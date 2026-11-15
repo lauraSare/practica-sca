@@ -1,0 +1,14 @@
+name: SCA con Syft y Grype
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  sca:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generar SBOM con Syft
+        run: docker run --rm -v "$PWD:/app" anchore/syft:latest scan dir:/app -o cyclonedx-json=/app/sbom-cyclonedx.json
+      - name: Escanear SBOM con Grype
+        run: docker run --rm -v "$PWD:/app" anchore/grype:latest sbom:/app/sbom-cyclonedx.json --fail-on high --only-fixed
