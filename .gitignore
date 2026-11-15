@@ -1,0 +1,5 @@
+node_modules/
+reportes-dc/
+snyk-report.json
+sbom-*.json
+.env
